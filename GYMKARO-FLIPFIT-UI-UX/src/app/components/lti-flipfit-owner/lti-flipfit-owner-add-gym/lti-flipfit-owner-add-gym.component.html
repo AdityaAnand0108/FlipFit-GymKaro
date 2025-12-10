@@ -1,0 +1,41 @@
+<div class="add-gym-container">
+  <mat-card class="add-gym-card">
+    <mat-card-header>
+      <mat-card-title>{{ isEditMode ? 'Edit Gym' : 'Add New Gym' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="onSave()" #gymForm="ngForm" class="gym-form">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Gym Name</mat-label>
+            <input matInput placeholder="Enter gym name" name="centerName" [(ngModel)]="gymCenter.centerName" required>
+            <mat-icon matSuffix>fitness_center</mat-icon>
+            <mat-error *ngIf="gymForm.controls['centerName']?.invalid">Gym Name is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Location</mat-label>
+            <input matInput placeholder="Enter city/location" name="city" [(ngModel)]="gymCenter.city" required>
+            <mat-icon matSuffix>location_on</mat-icon>
+            <mat-error *ngIf="gymForm.controls['city']?.invalid">Location is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contact Number</mat-label>
+          <input matInput placeholder="Enter contact number" name="contactNumber" [(ngModel)]="gymCenter.contactNumber" required pattern="^[0-9]{10}$">
+          <mat-icon matSuffix>phone</mat-icon>
+          <mat-error *ngIf="gymForm.controls['contactNumber']?.hasError('required')">Contact Number is required</mat-error>
+          <mat-error *ngIf="gymForm.controls['contactNumber']?.hasError('pattern')">Enter a valid 10-digit number</mat-error>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-button type="button" (click)="onCancel()">Cancel</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!gymForm.valid">
+            {{ isEditMode ? 'Update Gym' : 'Save Gym' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

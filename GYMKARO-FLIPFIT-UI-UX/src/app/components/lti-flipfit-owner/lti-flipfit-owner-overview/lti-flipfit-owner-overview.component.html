@@ -1,0 +1,166 @@
+<div class="overview-container">
+  <div class="dashboard-header">
+    <h1 class="mat-headline-4">FlipFit Owner Dashboard</h1>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-header">
+          <span class="stat-label">Today's Bookings</span>
+          <mat-icon class="stat-icon">calendar_today</mat-icon>
+        </div>
+        <div class="stat-value-split">
+          <div class="split-item">
+            <span class="split-value">{{todaysBookedCount}}</span>
+            <span class="split-label">Booked</span>
+          </div>
+          <div class="split-divider"></div>
+          <div class="split-item">
+            <span class="split-value">{{todaysCancelledCount}}</span>
+            <span class="split-label">Cancelled</span>
+          </div>
+          <div class="split-divider"></div>
+          <div class="split-item">
+            <span class="split-value">{{todaysPendingCount}}</span>
+            <span class="split-label">Pending</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-header">
+          <span class="stat-label">Gyms</span>
+          <mat-icon class="stat-icon">fitness_center</mat-icon>
+        </div>
+        <div class="stat-value-split">
+          <div class="split-item">
+            <span class="split-value">{{totalGymsCount}}</span>
+            <span class="split-label">Total</span>
+          </div>
+          <div class="split-divider"></div>
+          <div class="split-item">
+            <span class="split-value">{{activeGymsCount}}</span>
+            <span class="split-label">Active</span>
+          </div>
+          <div class="split-divider"></div>
+          <div class="split-item">
+            <span class="split-value">{{approvedGymsCount}}</span>
+            <span class="split-label">Approved</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-header">
+          <span class="stat-label">Slots</span>
+          <mat-icon class="stat-icon">list</mat-icon>
+        </div>
+        <div class="stat-value-split">
+          <div class="split-item">
+            <span class="split-value">{{totalSlotsCount}}</span>
+            <span class="split-label">Total</span>
+          </div>
+          <div class="split-divider"></div>
+          <div class="split-item">
+            <span class="split-value">{{activeSlotsCount}}</span>
+            <span class="split-label">Active</span>
+          </div>
+          <div class="split-divider"></div>
+          <div class="split-item">
+            <span class="split-value">{{approvedSlotsCount}}</span>
+            <span class="split-label">Approved</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-header">
+          <span class="stat-label">Revenue</span>
+          <mat-icon class="stat-icon">attach_money</mat-icon>
+        </div>
+        <div class="stat-value-split">
+          <div class="split-item">
+            <span class="split-value">{{formatStat(monthlyRevenue, true)}}</span>
+            <span class="split-label">Monthly</span>
+          </div>
+          <div class="split-divider"></div>
+          <div class="split-item">
+            <span class="split-value">{{formatStat(weeklyRevenue, true)}}</span>
+            <span class="split-label">Weekly</span>
+          </div>
+          <div class="split-divider"></div>
+          <div class="split-item">
+            <span class="split-value">{{formatStat(todaysRevenue, true)}}</span>
+            <span class="split-label">Today</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="content-grid">
+    <div class="left-column">
+      <mat-card class="quick-actions-card">
+        <mat-card-header>
+          <mat-card-title>Quick Actions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="actions-content">
+          <button mat-flat-button color="primary" class="action-btn" (click)="onAddSlot()">
+            Add New Slot
+          </button>
+          <button mat-stroked-button color="primary" class="action-btn" (click)="onManageGymProfile()">
+            Manage Gym Profile
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Notifications Card -->
+      <app-lti-flipfit-notification></app-lti-flipfit-notification>
+    </div>
+
+    <!-- Recent Activity -->
+    <mat-card class="recent-activity-card">
+      <mat-card-header>
+        <mat-card-title>Recent Bookings</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table mat-table [dataSource]="recentBookings" class="activity-table" ngSkipHydration>
+          <ng-container matColumnDef="customer">
+            <th mat-header-cell *matHeaderCellDef> Customer </th>
+            <td mat-cell *matCellDef="let element"> {{element.customer}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="time">
+            <th mat-header-cell *matHeaderCellDef> Time </th>
+            <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="gymCenter">
+            <th mat-header-cell *matHeaderCellDef> Gym Center </th>
+            <td mat-cell *matCellDef="let element"> {{element.gymCenter}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let element">
+              <mat-chip-set>
+                <mat-chip [ngClass]="'status-' + element.status.toLowerCase()" selected>{{element.status}}</mat-chip>
+              </mat-chip-set>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

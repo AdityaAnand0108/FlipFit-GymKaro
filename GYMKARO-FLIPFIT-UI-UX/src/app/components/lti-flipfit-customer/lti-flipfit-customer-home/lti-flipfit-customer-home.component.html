@@ -1,0 +1,84 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Your Fitness, Your Terms.</h1>
+      <p>Access hundreds of premium gyms and classes near you. No contracts, just sweat.</p>
+      <div class="hero-actions">
+        <button mat-flat-button color="primary" class="cta-btn" (click)="onFindGym()">Find Your Gym</button>
+        <button mat-stroked-button class="secondary-btn">How it Works</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <h2>Why FlipFit?</h2>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="icon-wrapper">
+          <mat-icon>calendar_today</mat-icon>
+        </div>
+        <h3>Flexible Booking</h3>
+        <p>Prepare flexible booking with enjoyable routine classes.</p>
+      </div>
+      <div class="feature-item">
+        <div class="icon-wrapper">
+          <mat-icon>emoji_events</mat-icon>
+        </div>
+        <h3>Top-Tier Gyms</h3>
+        <p>Premium gyms and classes across locations, enough for doctrine.</p>
+      </div>
+      <div class="feature-item">
+        <div class="icon-wrapper">
+          <mat-icon>block</mat-icon>
+        </div>
+        <h3>Zero Commitment</h3>
+        <p>Zero commitment, with wind on contracts, just care.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular Classes Section -->
+  <section class="classes-section">
+    <h2>Popular Classes Near You</h2>
+    <div class="classes-grid">
+      <mat-card class="class-card" *ngFor="let classItem of popularClasses">
+        <div class="card-image-wrapper">
+            <img [src]="classItem.image" alt="Class image" class="class-image">
+            <span class="price-badge">₹{{classItem.price}}</span>
+        </div>
+        <mat-card-content class="card-content">
+          <div class="card-header">
+              <h3>{{classItem.title}}</h3>
+              <p class="gym-name">{{classItem.gymName}}</p>
+          </div>
+          
+          <div class="card-details">
+             <div class="detail-row">
+                <mat-icon>location_on</mat-icon>
+                <span>{{classItem.location}}</span>
+             </div>
+             <div class="detail-row">
+                <mat-icon>access_time</mat-icon>
+                <span>{{classItem.time}}</span>
+             </div>
+          </div>
+          
+          <div class="seats-info" *ngIf="classItem.availableSeats !== undefined">
+             <span [class.low-seats]="classItem.availableSeats < 5" [class.available]="classItem.availableSeats >= 5">
+                {{classItem.availableSeats}} seats left
+             </span>
+          </div>
+        </mat-card-content>
+        
+        <div class="card-actions">
+           <button *ngIf="classItem.availableSeats > 0; else waitlistBtn" mat-flat-button color="primary" (click)="openBookingDialog(classItem)">Book Now</button>
+           <ng-template #waitlistBtn>
+             <button mat-stroked-button color="warn" (click)="onJoinWaitlist(classItem)">Join Waitlist</button>
+           </ng-template>
+        </div>
+      </mat-card>
+    </div>
+  </section>
+</div>
